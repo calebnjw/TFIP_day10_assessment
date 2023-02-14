@@ -10,10 +10,6 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * Hello world!
- *
- */
 public class App {
   public static String server;
   public static Integer port;
