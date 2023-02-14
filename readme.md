@@ -1,7 +1,5 @@
 # Operation
 
----
-
 ## Task 1:
 
 ### Compile app
@@ -15,8 +13,6 @@
 ### Run app
 
 > `java -cp classes task01.App localhost 5000`
-
----
 
 ## Task 2:
 
