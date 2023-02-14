@@ -6,4 +6,4 @@
 
 ## Run app
 
-> `java -cp classes task01.App localhost 5000`
+> `java -cp classes task02.App [folder name]`
