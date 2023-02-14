@@ -13,6 +13,24 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+// look through each document
+// remove all punctuation (including words like I'll and we'll?)
+// split into List<String>
+// go through each word
+// collect current words into a map
+// check if it exists in the map
+// if no exist: 
+//// make a new Word class for words
+//// Word will store: 
+//// - word &
+//// - map of next words:
+////// - word
+////// - count
+//// - total occurences of next words
+// if it exists: update counts
+
+// in "Oh the places you'll go", line 39 says "y our" instead of "your"
+
 public class App {
   public static File path;
 
@@ -33,10 +51,10 @@ public class App {
 
     List<File> fileList = new LinkedList<File>(); // create a list of file paths
 
-    Map<String, Word> wordTrack = new TreeMap<>(); // hash map to track words
+    Map<String, Word> wordTrack = new TreeMap<>(); // hash map to track words across all files
 
-    for (File f : path.listFiles()) {
-      String oneLine = fileToString(f);
+    for (File f : path.listFiles()) { // iterate through each file
+      String oneLine = fileToString(f); // convert whole file into one string
       List<String> wordList = Arrays.asList(oneLine.split(" "));
       for (int i = 0; i < wordList.size() - 1; i++) {
         String word = wordList.get(i);
@@ -51,25 +69,7 @@ public class App {
           wordObject.addNextWord(nextWord);
         }
       }
-      // split into List<String>
-      // go through each word
-      // check if it exists in the map
-      // if it doesn't, create new entry and initialise new Word()
-      // add next word to Word
-      // add count to Word
-      // if it does, look at next word
-      // look up nextWords in Word
     }
-
-    // look through each document
-    // remove all punctuation (but things like I'll and we'll should be left
-    // intact?)
-    // collect all words from all files into an object
-    //// might wanna make a new class for words?
-    //// words will store a list of words that follow
-    //// and count how many of those words occur
-    //// should also be able to sum up the total number of next words for
-    // calculate probability
 
     for (String key : wordTrack.keySet()) {
       Word entry = wordTrack.get(key);
@@ -81,12 +81,11 @@ public class App {
     String fullText = ""; // to store full text as one string and return that
     String nextLine;
 
-    // read lines from file one by one
     InputStream is = new FileInputStream(f);
     InputStreamReader isr = new InputStreamReader(is);
     BufferedReader br = new BufferedReader(isr);
 
-    // dump all text into fullText
+    // dump all text into a string
     while ((nextLine = br.readLine()) != null) {
       fullText += nextLine + " ";
     }
@@ -95,20 +94,18 @@ public class App {
     isr.close();
     is.close();
 
-    // regular expressions to remove punctuation but keep apostrophe
-    // we'll != well
-    // I'll != ill
+    // regular expressions
     String punctuationRegex = "\\p{Punct}";
     String spacesRegex = " +";
 
     // strip punctuation marks and extra spaces
     fullText = fullText.trim()
-        .replaceAll(punctuationRegex, "") // remove all punctuation
-        .replace("\u2019", "") // remove apostrophe
-        .replace("\u201C", "") // remove double quote
-        .replace("\u2026", " ") // remove ellipsis
-        .replaceAll(spacesRegex, " ") // remove extra spaces
-        .toLowerCase();
+        .replaceAll(punctuationRegex, "") // standard punctuation
+        .replace("\u2019", "") // unicode apostrophe
+        .replace("\u201C", "") // unicode double quote
+        .replace("\u2026", " ") // unicode ellipsis
+        .replaceAll(spacesRegex, " ") // extra spaces
+        .toLowerCase(); // convert all to lowercase for easier comparison
 
     return fullText;
   }
