@@ -4,9 +4,9 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class Word {
-  public String word;
-  public Integer totalNextCount = 0;
-  public Map<String, Integer> followingWords = new TreeMap<>();
+  public String word; // the current word
+  public Integer totalNextCount = 0; // total number of next words
+  public Map<String, Integer> followingWords = new TreeMap<>(); // tracking next words and their counts
 
   public Word(String word) {
     this.word = word;

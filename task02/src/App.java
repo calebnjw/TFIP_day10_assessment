@@ -32,30 +32,29 @@ import java.util.TreeMap;
 // in "Oh the places you'll go", line 39 says "y our" instead of "your"
 
 public class App {
-  public static File path;
+  // dunno if I should be declaring variables here like that
+  private static File path; // folder to look up
+  private static List<File> fileList = new LinkedList<File>(); // create a list of file paths
+  private static Map<String, Word> wordTrack = new TreeMap<>(); // hash map to track words across all files
 
   public static void main(String[] args) throws NullPointerException, IOException {
     if (args.length == 1) {
-      path = new File(args[0]); // define folder to look up
+      path = new File(args[0]); // define folder
 
       if (!path.canRead()) { // if folder does not exist
         // tell user to enter valid directory and end program
         System.out.println("Directory does not exist. Please enter a valid folder name. ");
         return;
       }
-    } else {
-      // user did not enter a folder name or put in too many arguments
+    } else { // user did not enter a folder name or put in too many arguments
       System.out.println("please run: java -cp classes task02.App [folder name]");
       return;
     }
 
-    List<File> fileList = new LinkedList<File>(); // create a list of file paths
-
-    Map<String, Word> wordTrack = new TreeMap<>(); // hash map to track words across all files
-
     for (File f : path.listFiles()) { // iterate through each file
-      String oneLine = fileToString(f); // convert whole file into one string
-      List<String> wordList = Arrays.asList(oneLine.split(" "));
+      String oneLine = fileToString(f); // convert whole file into one cleaned string
+      List<String> wordList = Arrays.asList(oneLine.split(" ")); // split into individual words
+
       for (int i = 0; i < wordList.size() - 1; i++) {
         String word = wordList.get(i);
         String nextWord = wordList.get(i + 1);
@@ -72,8 +71,8 @@ public class App {
     }
 
     for (String key : wordTrack.keySet()) {
-      Word entry = wordTrack.get(key);
-      System.out.println(entry.toString());
+      Word data = wordTrack.get(key); // go through each word
+      System.out.println(data); // and automatically call toString method
     }
   }
 
