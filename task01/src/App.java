@@ -82,7 +82,7 @@ public class App {
     return result;
   }
 
-  public static double getStandardDeviation(List<Double> numberList, float mean) {
+  public static double getStandardDeviation(List<Double> numberList, Float mean) {
     Double differenceSquareSum = 0.0d;
     Double size = (double) numberList.size();
     Double variance;
