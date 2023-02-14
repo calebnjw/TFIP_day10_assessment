@@ -25,21 +25,25 @@ public class App {
 
     Socket s = new Socket(server, port); // open a socket listening on [server]:[port]
 
+    // input and output streams
     InputStream is = s.getInputStream();
     ObjectInputStream ois = new ObjectInputStream(is);
 
     OutputStream os = s.getOutputStream();
     ObjectOutputStream oos = new ObjectOutputStream(os);
 
+    // read data from server, convert into a list of doubles
     String response = ois.readUTF();
     List<String> stringList = Arrays.asList(response.split(","));
     List<Double> doubleList = toDoubleList(stringList);
 
+    // calculate mean
     Float mean = (float) getMean(doubleList);
-    System.out.println("Mean: " + Double.toString(mean));
+    // System.out.println("Mean: " + Double.toString(mean));
 
+    // calculate standard deviation
     Float deviation = (float) getStandardDeviation(doubleList, mean);
-    System.out.println("Deviation: " + Double.toString(deviation));
+    // System.out.println("Deviation: " + Double.toString(deviation));
 
     oos.writeUTF("Ng Jun Wei Caleb");
     oos.writeUTF("lelebng@gmail.com");
