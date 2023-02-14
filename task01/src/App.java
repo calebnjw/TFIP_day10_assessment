@@ -46,7 +46,7 @@ public class App {
     System.out.println("Deviation: " + Double.toString(deviation));
 
     oos.writeUTF("Ng Jun Wei Caleb");
-    oos.writeUTF("calebnjw@outlook.com");
+    oos.writeUTF("lelebng@gmail.com");
     oos.writeFloat(mean);
     oos.writeFloat(deviation);
 
