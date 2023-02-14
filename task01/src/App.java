@@ -19,7 +19,7 @@ public class App {
       server = args[0];
       port = Integer.parseInt(args[1]);
     } else {
-      System.out.println("please run: java -cp classes app.Main localhost 5000");
+      System.out.println("please run: java -cp classes task01.App localhost 5000");
       return;
     }
 

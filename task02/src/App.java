@@ -10,23 +10,20 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class App {
   public static File path;
 
   public static void main(String[] args) throws NullPointerException, IOException {
     if (args.length == 1) {
-      try {
-        path = new File(args[0]); // define folder to look up
+      path = new File(args[0]); // define folder to look up
 
-        if (!path.canRead()) { // if folder does not exist
-          // tell user to enter valid directory and end program
-          System.out.println("Directory does not exist. Please enter a valid folder name. ");
-          return;
-        }
-      } catch (NullPointerException e) {
+      if (!path.canRead()) { // if folder does not exist
+        // tell user to enter valid directory and end program
         System.out.println("Directory does not exist. Please enter a valid folder name. ");
-        e.printStackTrace();
+        return;
       }
     } else {
       // user did not enter a folder name or put in too many arguments
@@ -34,18 +31,35 @@ public class App {
       return;
     }
 
-    // this creates a list with file paths. we want this.
-    List<File> fileList = new LinkedList<File>();
-    fileList = Arrays.asList(path.listFiles());
-    System.out.println(fileList);
+    List<File> fileList = new LinkedList<File>(); // create a list of file paths
 
-    String combinedText = "";
-    for (File f : fileList) {
+    Map<String, Word> wordTrack = new TreeMap<>(); // hash map to track words
+
+    for (File f : path.listFiles()) {
       String oneLine = fileToString(f);
-      combinedText += oneLine + " ";
-    }
+      List<String> wordList = Arrays.asList(oneLine.split(" "));
+      for (int i = 0; i < wordList.size() - 1; i++) {
+        String word = wordList.get(i);
+        String nextWord = wordList.get(i + 1);
 
-    System.out.println(combinedText);
+        if (wordTrack.containsKey(word)) { // if word already exists
+          Word wordObject = wordTrack.get(word); // get Word object
+          wordObject.addNextWord(nextWord); // and add next word
+        } else {
+          wordTrack.put(word, new Word(word)); // create new entry
+          Word wordObject = wordTrack.get(word);
+          wordObject.addNextWord(nextWord);
+        }
+      }
+      // split into List<String>
+      // go through each word
+      // check if it exists in the map
+      // if it doesn't, create new entry and initialise new Word()
+      // add next word to Word
+      // add count to Word
+      // if it does, look at next word
+      // look up nextWords in Word
+    }
 
     // look through each document
     // remove all punctuation (but things like I'll and we'll should be left
@@ -55,9 +69,12 @@ public class App {
     //// words will store a list of words that follow
     //// and count how many of those words occur
     //// should also be able to sum up the total number of next words for
-    // probability
-    //
+    // calculate probability
 
+    for (String key : wordTrack.keySet()) {
+      Word entry = wordTrack.get(key);
+      System.out.println(entry.toString());
+    }
   }
 
   public static String fileToString(File f) throws FileNotFoundException, IOException {
@@ -86,8 +103,12 @@ public class App {
 
     // strip punctuation marks and extra spaces
     fullText = fullText.trim()
-        .replaceAll(punctuationRegex, "")
-        .replaceAll(spacesRegex, " ");
+        .replaceAll(punctuationRegex, "") // remove all punctuation
+        .replace("\u2019", "") // remove apostrophe
+        .replace("\u201C", "") // remove double quote
+        .replace("\u2026", " ") // remove ellipsis
+        .replaceAll(spacesRegex, " ") // remove extra spaces
+        .toLowerCase();
 
     return fullText;
   }

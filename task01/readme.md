@@ -6,7 +6,7 @@
 
 ## Compile app
 
-> `javac -sourcepath src -d classes src/\*.java`
+> `javac -sourcepath src -d classes src/*.java`
 
 ## Run app
 
